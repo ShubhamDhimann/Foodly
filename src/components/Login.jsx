@@ -14,7 +14,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     setServerError(""); // Clear any previous error
     try {
-      const res = await axios.post("http://localhost:3000/login", data);
+      const res = await axios.post("https://foodlybackend-5pwv.onrender.com/login", data);
       // console.log(res);
       if(res.status == 200){
         localStorage.setItem("authToken", res.data.token)
