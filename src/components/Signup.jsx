@@ -13,7 +13,7 @@ const Signup = () => {
         // console.log(data);
         setServerError("");
         try {
-            const res = await axios.post("http://localhost:3000/signup", data)
+            const res = await axios.post("https://foodlybackend-5pwv.onrender.com/signup", data)
             // console.log(res.data.token);
             // const {token} = res.data.token;
             // localStorage.setItem("userEmail", )
