@@ -8,7 +8,7 @@ const MyOrders = () => {
   const userEmail = localStorage.getItem("userEmail")
   // console.log(userEmail);
   useEffect(() => {
-    axios.get("http://localhost:3000/getOrders", { params: { userEmail } })
+    axios.get("https://foodlybackend-5pwv.onrender.com/getOrders", { params: { userEmail } })
       .then((res) => {
         // console.log(res);
         setOrderHistory(res.data.orders)
