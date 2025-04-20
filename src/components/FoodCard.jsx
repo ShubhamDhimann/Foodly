@@ -14,7 +14,7 @@ function FoodCard() {
     const [allCategories, setAllCategories] = useState([]);
 
     const getFoodData = async () => {
-        const { data } = await axios.get("http://localhost:3000/getFoodData");
+        const { data } = await axios.get("https://foodlybackend-5pwv.onrender.com/getFoodData");
         setAllDishes(data.dishes);
         setAllCategories(data.categories);
     }
