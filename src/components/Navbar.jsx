@@ -30,7 +30,7 @@ const Navbar = () => {
       cart
     }
     // console.log(orderData);
-    axios.post("http://localhost:3000/placeOrder", orderData)
+    axios.post("https://foodlybackend-5pwv.onrender.com/placeOrder", orderData)
       .then((response) => {
         alert("Order Placed Successfully!")
         setCart([]);
