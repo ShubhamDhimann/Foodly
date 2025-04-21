@@ -14,6 +14,7 @@ const Navbar = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
   const Navigate = useNavigate()
+  const handleMyOrdersClick = () => {setCartOpen(false); setIsOpen(false)}
 
   // console.log(cart);
 
@@ -199,7 +200,7 @@ const Navbar = () => {
         <div className="absolute top-[64px] left-0 w-full bg-white flex flex-col gap-4 py-6 px-8 shadow-lg md:hidden z-50 transition-all">
           <NavLink to="/" onClick={closeMenu} className="text-gray-700 hover:text-black">Home</NavLink>
           {localStorage.getItem("authToken") &&
-            <NavLink to="/myorders" className="text-gray-700 hover:text-black">My Orders</NavLink>
+            <NavLink to="/myorders" onClick={handleMyOrdersClick} className="text-gray-700 hover:text-black">My Orders</NavLink>
           }
           <hr />
 
