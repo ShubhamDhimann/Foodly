@@ -3,11 +3,22 @@ import { FaArrowLeft, FaArrowRight, FaSearch } from "react-icons/fa";
 import { useContext } from 'react';
 import searchContext from '../context/searchContext';
 import { NavLink } from 'react-router-dom';
+import { useSwipeable } from 'react-swipeable';
 
 
 const Carousal = () => {
     const { search, setSearch } = useContext(searchContext)
     const handleSearch = (e) => setSearch(e.target.value);
+    const handlers = useSwipeable({
+        onSwipedLeft: () => {
+            setSlideNo((prev) => (prev === carousalImgLinks.length - 1 ? 0 : prev + 1))
+            console.log("swiped left")
+        },
+        onSwipedRight: () => {
+            setSlideNo((prev) => (prev === 0 ? carousalImgLinks.length - 1 : prev - 1))
+            console.log("swiped right")
+        }
+    })
 
     const carousalImgLinks = [
         "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
@@ -30,7 +41,8 @@ const Carousal = () => {
     const navDotHandler = (index) => setSlideNo(index);
 
     return (
-        <div className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[75vh] overflow-hidden">
+        <div className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[75vh] overflow-hidden"
+        {...handlers}>
             <div className="carousal w-full h-full flex transition-all duration-700" style={{ transform: `translateX(-${slideNo * 100}vw)` }}>
                 {carousalImgLinks.map((link, index) => (
                     <div key={index} className="w-screen flex-shrink-0">
@@ -47,7 +59,6 @@ const Carousal = () => {
                 <FaArrowRight />
             </button>
 
-            {/* Dots */}
             <div className="navDots absolute left-1/2 bottom-4 -translate-x-1/2 flex gap-2 sm:gap-3">
                 {carousalImgLinks.map((_, index) => (
                     <div key={index} onClick={() => navDotHandler(index)} className="h-2 w-6 sm:w-10 rounded-full bg-gray-300 hover:bg-white cursor-pointer shadow"></div>

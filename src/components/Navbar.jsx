@@ -7,6 +7,7 @@ import axios from "axios";
 
 const Navbar = () => {
   const { cart, setCart } = useContext(cartContext)
+  const [placeOrderText, setplaceOrderText] = useState("Place Order 😋👌")
   const [orderPlacingError, setOrderPlacingError] = useState("")
   const [order, setOrder] = useState([])
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +15,7 @@ const Navbar = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
   const Navigate = useNavigate()
-  const handleMyOrdersClick = () => {setCartOpen(false); setIsOpen(false)}
+  const handleMyOrdersClick = () => { setCartOpen(false); setIsOpen(false) }
 
   // console.log(cart);
 
@@ -25,6 +26,12 @@ const Navbar = () => {
   }
 
   const handlePlaceOrder = () => {
+    setplaceOrderText("Placing Order... 😉");
+    if (!localStorage.getItem("authToken")) {
+      setplaceOrderText("Kindly Login to Place Order")
+      return;
+    }
+    // !localStorage.getItem("authToken") && setplaceOrderText("Kindly Login to Place Order");
     const orderData = {
       userEmail: localStorage.getItem("userEmail"),
       time: new Date().toLocaleString(),
@@ -34,11 +41,14 @@ const Navbar = () => {
     axios.post("https://foodlybackend-5pwv.onrender.com/placeOrder", orderData)
       .then((response) => {
         alert("Order Placed Successfully!")
+        setplaceOrderText("Place Order 😋👌")
         setCart([]);
       })
       .catch((error) => {
         console.error("Error placing order:", error);
+        setplaceOrderText("Place Order 😋👌")
       });
+
   }
 
   const handleLogout = () => {
@@ -51,13 +61,12 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 w-full bg-white shadow-md px-6 py-4 flex justify-between items-center z-50 transition-all">
-      <NavLink to="/" className="text-xl font-semibold">Foodly</NavLink>
+      <NavLink to="/" className="text-xl font-semibold scale-110">Foodly</NavLink>
 
       {/* Desktop Links */}
       <div className="hidden md:flex gap-6 text-gray-700">
-        <NavLink to="/" onClick={closeMenu} className={({ isActive }) => `hover:text-gray-900 transition-all ${isActive ? "scale-105 font-bold" : ""}`} >
-          Home
-        </NavLink>
+        <NavLink to="/" onClick={closeMenu} className={({ isActive }) => `hover:text-gray-900 transition-all ${isActive ? "scale-105 font-bold" : ""}`}>Home</NavLink>
+        <NavLink to="/contact" onClick={closeMenu} className={({ isActive }) => `hover:text-gray-900 transition-all ${isActive ? "scale-105 font-bold" : ""}`}>Contact</NavLink>
         {localStorage.getItem("authToken") && <NavLink to="/myorders" className={({ isActive }) => `hover:text-gray-900 transition-all ${isActive ? "scale-105 font-bold" : ""}`}>My Orders</NavLink>}
       </div>
 
@@ -123,7 +132,7 @@ const Navbar = () => {
                   </div>
 
                   <button onClick={handlePlaceOrder} className="w-full bg-gray-800 hover:bg-gray-700 text-white cursor-pointer text-lg py-3 rounded-xl transition-all shadow-lg">
-                    Place Order 😋👌
+                    {placeOrderText}
                   </button>
                 </div>
               )}
@@ -137,10 +146,13 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
+
       <div className="flex items-center gap-5 md:hidden text-2xl cursor-pointer" >
         <div onClick={(e) => { handleCartClick(e) }} className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2.5 rounded-lg transition-all shadow-sm flex items-center justify-center">
           <FaCartShopping className="text-lg" />
         </div>
+
+
         {cartOpen && (
           <div className="absolute flex flex-col right-2 top-20 rounded-2xl bg-white shadow-2xl border border-gray-300 md:w-1/2 w-[90%] h-[70vh] z-40 p-6 overflow-hidden transition-all duration-300 ease-in-out">
             <button onClick={() => setCartOpen(false)}
@@ -184,7 +196,7 @@ const Navbar = () => {
                   </div>
 
                   <button onClick={handlePlaceOrder} className="w-full bg-gray-800 hover:bg-gray-700 text-white cursor-pointer text-lg py-3 rounded-xl transition-all shadow-lg">
-                    Place Order 😋👌
+                    {placeOrderText}
                   </button>
                 </div>
               )}
@@ -199,6 +211,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="absolute top-[64px] left-0 w-full bg-white flex flex-col gap-4 py-6 px-8 shadow-lg md:hidden z-50 transition-all">
           <NavLink to="/" onClick={closeMenu} className="text-gray-700 hover:text-black">Home</NavLink>
+          <NavLink to="/contact" onClick={closeMenu} className="text-gray-700 hover:text-black">Contact</NavLink>
           {localStorage.getItem("authToken") &&
             <NavLink to="/myorders" onClick={handleMyOrdersClick} className="text-gray-700 hover:text-black">My Orders</NavLink>
           }

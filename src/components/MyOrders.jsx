@@ -10,9 +10,9 @@ const MyOrders = () => {
   useEffect(() => {
     axios.get("https://foodlybackend-5pwv.onrender.com/getOrders", { params: { userEmail } })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setOrderHistory(res.data.orders)
-        console.log(orderHistory);
+        // console.log(orderHistory);
       })
       .catch((err) => {
         console.log("got a new one", err);
